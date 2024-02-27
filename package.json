@@ -1,0 +1,28 @@
+{
+  "name": "summer-body-bot",
+  "version": "1.0.0",
+  "description": "tg bot to be used to manage sports competition",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arttukauppinen/summer-body-bot.git"
+  },
+  "keywords": [
+    "mikmokki",
+    "What is blud yapping about 😭"
+  ],
+  "author": "Arttu Kauppinen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arttukauppinen/summer-body-bot/issues"
+  },
+  "homepage": "https://github.com/arttukauppinen/summer-body-bot#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.2.0",
+    "node-telegram-bot-api": "^0.64.0"
+  }
+}
