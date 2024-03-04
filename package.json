@@ -12,7 +12,7 @@
   },
   "keywords": [
     "mikmokki",
-    "What is blud yapping about 😭"
+    "yapping"
   ],
   "author": "Arttu Kauppinen",
   "license": "ISC",
@@ -23,6 +23,11 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "mongoose": "^8.2.0",
-    "node-telegram-bot-api": "^0.64.0"
+    "node-cron": "^3.0.3",
+    "telegraf": "^4.16.2",
+    "telegraf-session-local": "^2.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
