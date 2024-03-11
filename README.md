@@ -7,28 +7,46 @@ This is a telegram bot for the use of ... TODO:täydennä
 - **Node.js** - [nodejs.org](http://nodejs.org/)
 - **Telegraf** - [telegraf.js.org](https://telegraf.js.org/#/)
 - **Mongo DB** - [mongodb.github.io/node-mongodb-native](https://mongodb.github.io/node-mongodb-native/)
+- **Docker** - [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
 
 ## Quick Start
 
 Clone project and install dependencies:
+
 ```bash
 git clone https://github.com/arttukauppinen/summer-body-bot.git
 cd summer-body-bot
-npm install
+```
+
+Build the application:
+
+```bash
+sudo docker build -t summer-body-bot .
 ```
 
 Start the server (optional if running without docker):
+
 ```bash
+sudo docker run -d --name summer-body-bot summer-body-bot
+```
+
+Stop the server (optional if running without docker):
+
+```bash
+sudo docker stop summer-body-bot
 ```
 
 Run tests (tester apps):
+
 ```bash
+
 ```
 
 ## Project Structure
+
 ```
 .
-├── controllers/                        # Handles different aspects of bot interactions 
+├── controllers/                        # Handles different aspects of bot interactions
 |   ├── create-team-controller.js
 |   ├── start-controller.js
 |   └── weekly-points-controller.js
@@ -49,7 +67,8 @@ Run tests (tester apps):
 
 ```
 
-## License 
+## License
+
 Copyright (c) 2024
 
 TODO: onks tarpeellinen
