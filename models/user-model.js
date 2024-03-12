@@ -10,22 +10,31 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    required: true
+  },
   team: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Team'
   },
-  studyGroup: { 
+  guild: {
     type: String, 
-    enum: ['TiK', 'PT'], 
+    enum: ['TIK', 'PT'], 
     required: true 
   },
-  points: [{
-    week: Number,
-    sport: Number,
-    sleep: Number,
-    meditation: Number,
-    other: Number,
-  }],
+  points: {
+    exercise: { type: Number, default: 0 },
+    trySport: { type: Number, default: 0 },
+    sportsTurn: { type: Number, default: 0 },
+    tryRecipe: { type: Number, default: 0 },
+    goodSleep: { type: Number, default: 0 },
+    meditate: { type: Number, default: 0 },
+    lessAlc: { type: Number, default: 0 },
+    total: { type: Number, default: 0 },
+  },
 })
+
+userSchema.index({ team: 1 })
 
 module.exports = mongoose.model('User', userSchema)

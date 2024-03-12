@@ -1,30 +1,75 @@
 const Team = require('../models/team-model')
 
-//TODO error handling here and in controllers
-
-const createTeam = async (teamName) => {
+const createTeam = async (teamName, guild) => {
   try {
-    const team = new Team({ name: teamName })
+    const team = new Team({ name: teamName, guild: guild })
     await team.save()
     return team
   } catch (error) {
+    console.error('Error occurred in createTeam:', error)
     throw error
   }
 }
 
-const addMemberToTeam = async (teamId, userId) => {
+const deleteTeam = async (teamId) => {
+  try {
+    const result = await Team.deleteOne({ _id: teamId })
+    return result
+  } catch (error) {
+    console.error('Error occurred in deleteTeam:', error)
+    throw new Error('Error deleting team')
+  }
+}
+
+const joinTeam = async (userId, teamId) => {
   try {
     const team = await Team.findById(teamId)
     team.members.push(userId)
     await team.save()
-    return team
   } catch (error) {
-    throw error
+    console.error('Error occurred in joinTeam:', error)
+    throw new Error('Error joining team')
   }
 }
 
+const leaveTeam = async (userId, teamId) => {
+  try {
+    const team = await Team.findById(teamId)
+
+    console.log("vitut", team)
+
+    const memberIndex = team.members.indexOf(userId)
+
+    if (memberIndex === -1) {
+      console.error(`User with ID ${userId} is not a member of team ${teamId}`)
+      throw new Error('User not in team')
+    }
+
+    team.members.splice(memberIndex, 1)
+    await team.save()
+    if (team.members.length === 0) {
+      await deleteTeam(teamId)
+    }
+  } catch (error) {
+    console.error('Error occurred in leaveTeam:', error)
+    throw new Error('Error leaving team')
+  }
+}
+
+const getTeamById = async (teamId) => {
+  try {
+    const team = await Team.findById(teamId)
+    return team
+  } catch (error) {
+    console.error('Error occurred in getTeamById:', error)
+    throw new Error('Error retrieving team')
+  }
+}
 
 module.exports = {
   createTeam,
-  addMemberToTeam,
+  deleteTeam,
+  joinTeam,
+  leaveTeam,
+  getTeamById
 }
