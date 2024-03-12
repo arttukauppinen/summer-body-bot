@@ -3,14 +3,10 @@ const texts = require('../utils/texts.js')
 
 const startWizard = new Scenes.WizardScene(
   'start_wizard',
-  (ctx) => {
-    ctx.reply(texts.actions.start.introduction)
-      .then(() => {
-        ctx.reply(texts.actions.start.instructions)
-      })
-      .then(() => {
-        ctx.scene.leave()
-      })
+  async (ctx) => {
+    await ctx.reply(texts.actions.start.introduction)
+    await ctx.reply(texts.actions.start.instructions)
+    await ctx.scene.leave()
   }
 )
 
