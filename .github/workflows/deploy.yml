@@ -18,8 +18,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.2
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-passphrase: ${{ secrets.SSH_PASSPHRASE }}
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no -l <YOUR_SERVER_USER> <YOUR_SERVER_IP> 'cd /home/mikmokki/summer-body-bot/ && git pull origin master && sudo ./deploy-script.sh'
+          ssh -o StrictHostKeyChecking=no -l ${{ YOUR_SERVER_USER}} ${{ YOUR_SERVER_IP}} 'cd /home/mikmokki/summer-body-bot/ && git pull origin master && sudo ./deploy-script.sh'
