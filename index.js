@@ -1,33 +1,35 @@
-const { Telegraf } = require('telegraf')
+const { connectDatabase, disconnectDatabase } = require('./database')
 const bot = require('./bot')
 
-require('./config')
+async function startBot() {
+  await connectDatabase()
 
-bot.launch().then(() => {
-  console.log('Bot started')
-}).catch(err => {
-  console.error('Could not start the bot', err)
+  try {
+    await bot.launch()
+    console.log('Bot started')
+  } catch (err) {
+    console.error('Could not start the bot', err)
+  }
+}
+
+startBot()
+
+process.once('SIGINT', () => {
+  bot.stop('SIGINT')
+    .then(disconnectDatabase)
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error('Error during shutdown:', error)
+      process.exit(1)
+    })
 })
 
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
-
-// const { Telegraf } = require('telegraf')
-// const mongoose = require('mongoose')
-// const config = require('./config')
-// const bot = require('./bot')
-
-// mongoose.connect(config.mongoUri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// }).then(() => {
-//   console.log('Connected to MongoDB')
-//   // Start the bot
-//   bot.launch()
-//   console.log('Bot started')
-// }).catch(err => {
-//   console.error('Could not connect to MongoDB', err)
-// })
-
-// process.once('SIGINT', () => bot.stop('SIGINT'))
-// process.once('SIGTERM', () => bot.stop('SIGTERM'))
+process.once('SIGTERM', () => {
+  bot.stop('SIGTERM')
+    .then(disconnectDatabase)
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error('Error during shutdown:', error)
+      process.exit(1)
+    })
+})
