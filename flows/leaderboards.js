@@ -148,9 +148,6 @@ guildStandingsScene.enter(async (ctx) => {
 })
 
 
-
-
-
 module.exports = {
   teamRankingsScene,
   teamMemberRankingsScene,

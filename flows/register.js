@@ -52,6 +52,10 @@ const registerWizard = new Scenes.WizardScene(
           await ctx.reply('No team with that ID found. Please ensure you\'ve entered it correctly and try again.')
           return ctx.wizard.selectStep(ctx.wizard.cursor)
         }
+        if (user.guild !== team.guild) {
+          await ctx.reply('You cannot join a team that belongs to a different guild.')
+          return ctx.wizard.selectStep(ctx.wizard.cursor)
+        }
         await userService.addUserToTeam(user._id, team._id)
     
         await ctx.reply(`Successfully joined ${team.name}!`)

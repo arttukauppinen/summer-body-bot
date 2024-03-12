@@ -17,6 +17,7 @@ const addPoints = async (userId, pointsData) => {
     Object.keys(pointsData).forEach((key) => {
       user.points[key] += pointsData[key]
     })
+
     await user.save()
     
     Object.keys(pointsData).forEach((key) => {
@@ -33,7 +34,7 @@ const addPoints = async (userId, pointsData) => {
 
 const getTeamRankings = async () => {
   try {
-    const teams = await Team.find().sort({ 'points.total': -1 }).limit(10)
+    const teams = await Team.find().sort({ 'points.total': -1 }).limit(30)
     return teams.map(team => ({
       name: team.name,
       totalPoints: team.points.total
@@ -53,7 +54,7 @@ const getTeamMemberRankings = async (userId) => {
 
     const teamMembers = await User.find({ team: user.team }).sort({ 'points.total': -1 })
     return teamMembers.map(member => ({
-      username: member.username,
+      name: member.name,
       totalPoints: member.points.total
     }))
   } catch (error) {

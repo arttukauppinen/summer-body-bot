@@ -55,6 +55,11 @@ const joinTeamWizard = new Scenes.WizardScene(
             return ctx.wizard.selectStep(ctx.wizard.cursor)
           }
 
+          if (user.guild !== team.guild) {
+            await ctx.reply('You cannot join a team that belongs to a different guild.')
+            return ctx.scene.leave()
+          }
+
           if (user.team) {
             await teamService.leaveTeam(user._id, user.team)
           }

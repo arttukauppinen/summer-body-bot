@@ -11,6 +11,16 @@ const createUser = async (userData) => {
   }
 }
 
+const getAllUsers = async () => {
+  try {
+    const users = await User.find({})
+    return users
+  } catch (error) {
+    console.error('Error occurred in getAllUsers:', error)
+    return []
+  }
+}
+
 const deleteUser = async (userId) => {
   try {
     const result = await User.deleteOne({ userId: userId })
@@ -44,9 +54,22 @@ const addUserToTeam = async (userId, teamId) => {
   }
 }
 
+const sendReminder = async (bot) => {
+  const users = await getAllUsers()
+  const today = new Date().toISOString().split('T')[0]
+
+  users.forEach((user) => {
+    //if (!user.lastSubmission || user.lastSubmission.toISOString().split('T')[0] !== today) {
+      bot.telegram.sendMessage(user.userId, "i am the mikk dogg")
+    //}
+  })
+}
+
 module.exports = {
   createUser,
+  getAllUsers,
   deleteUser,
   findUser,
   addUserToTeam,
+  sendReminder
 }

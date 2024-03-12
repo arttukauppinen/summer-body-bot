@@ -2,6 +2,7 @@ const { Scenes, Markup } = require('telegraf')
 const teamService = require('../services/team-service')
 const userService = require('../services/user-service')
 const texts = require('../utils/texts')
+const validateTeamName = require('../utils/validate-team-name')
 
 const createTeamWizard = new Scenes.WizardScene(
   'create_team_wizard',
@@ -32,13 +33,14 @@ const createTeamWizard = new Scenes.WizardScene(
     }
   },
   async (ctx) => {
-    if (ctx.wizard.state.confirmCreate) {                
+    if (ctx.wizard.state.confirmCreate) {            
       const teamName = ctx.message.text
       const userId = ctx.from.id
       const user = await userService.findUser(userId)
+      const validation = validateTeamName(teamName)
 
-      if (!teamName || teamName.length > 15) {
-        await ctx.reply('The team name you provided is not valid. Please ensure it is less than 15 characters long.')
+      if (!validation.isValid) {
+        await ctx.reply(validation.reason)
         return ctx.wizard.selectStep(ctx.wizard.cursor)
       }
 

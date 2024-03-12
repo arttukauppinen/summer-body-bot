@@ -32,8 +32,8 @@ const userSchema = new mongoose.Schema({
     meditate: { type: Number, default: 0 },
     lessAlc: { type: Number, default: 0 },
     total: { type: Number, default: 0 },
-  },
-})
+  }
+}, { timestamps: true })
 
 userSchema.index({ team: 1 })
 

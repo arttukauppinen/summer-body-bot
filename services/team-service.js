@@ -36,8 +36,6 @@ const leaveTeam = async (userId, teamId) => {
   try {
     const team = await Team.findById(teamId)
 
-    console.log("vitut", team)
-
     const memberIndex = team.members.indexOf(userId)
 
     if (memberIndex === -1) {
