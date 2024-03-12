@@ -19,8 +19,7 @@ const weekScoresWizard = new Scenes.WizardScene(
       return ctx.scene.leave()
     }
 
-    const check = await canAddPoints(user.updatedAt)
-    console.log("checkistä", check)
+    const check = await canAddPoints(user.lastSubmission)
     if (!check.canAdd) {
       await ctx.reply(check.reason)
       return ctx.scene.leave()

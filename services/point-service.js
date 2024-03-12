@@ -16,6 +16,7 @@ const addPoints = async (userId, pointsData) => {
 
     Object.keys(pointsData).forEach((key) => {
       user.points[key] += pointsData[key]
+      user.lastSubmission = new Date()
     })
 
     await user.save()
