@@ -1,6 +1,15 @@
 const { Telegraf, Scenes, session } = require('telegraf')
 const { telegramToken } = require('./config')
-const bot = new Telegraf(telegramToken)
+//const bot = new Telegraf(telegramToken)
+const https = require('https')
+
+const agent = new https.Agent({
+  keepAlive: false,
+})
+
+const bot = new Telegraf(telegramToken, {
+  telegram: { agent },
+})
 
 const { startWizard } = require('./flows/information-flows/start')
 const { howToGetPoints } = require('./flows/information-flows/how-to-points')
