@@ -56,7 +56,7 @@ bot.use(stage.middleware())
 
 bot.command('start', onlyPrivate, (ctx) => { ctx.scene.enter('start_wizard') })
 bot.command('howtogetpoints', onlyPrivate, (ctx) => { ctx.scene.enter('how_to_get_points_scene') })
-bot.command('statsinfo', (ctx) => { ctx.scene.enter('stats_info_scene') })
+bot.command('statsinfo', onlyPrivate, (ctx) => { ctx.scene.enter('stats_info_scene') })
 bot.command('help', (ctx) => { ctx.scene.enter('help_scene') })
 bot.command('terms', onlyPrivate, (ctx) => { ctx.scene.enter('terms_scene') })
 

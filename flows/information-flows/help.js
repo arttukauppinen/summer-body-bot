@@ -5,7 +5,6 @@ helpScene.enter(async (ctx) => {
   let helpMessage = '*Help and Commands Overview* 🛠️\n\n'
 
   if (ctx.update.message.chat.type === 'private') {
-    // Help information for private chat
     helpMessage += '/start \\- Get introduction & instructions to get basic information about the competition\\.\n\n'
     helpMessage += '/register \\- Initiate your registration, create or join a team, and set up your profile\\.\n\n'
     helpMessage += '/createteam \\- Form a new team within your guild\\.\n\n'

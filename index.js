@@ -1,14 +1,29 @@
 const { connectDatabase, disconnectDatabase } = require('./database')
 const bot = require('./bot')
 
-async function startBot() {
-  await connectDatabase()
+async function handleError(error) {
+  console.error('Unexpected error occurred:', error)
 
+  if (error.response && error.response.description) {
+    console.error('Error response:', error.response.description)
+  }
+
+  if (error.response && error.response.error_code === 403) {
+    console.error('Handling 403 error: The bot was kicked from the group chat')
+  }
+
+  console.log('Attempting to restart the bot...')
+  setTimeout(startBot, 5000)
+}
+
+async function startBot() {
   try {
+    await connectDatabase()
     await bot.launch()
     console.log('Bot started')
   } catch (err) {
-    console.error('Could not start the bot', err)
+    console.error('Could not start the bot:', err)
+    handleError(err)
   }
 }
 
