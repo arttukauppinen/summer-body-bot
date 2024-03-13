@@ -4,7 +4,7 @@ const startWizard = new Scenes.WizardScene(
   'start_wizard',
   async (ctx) => {
     let introductionMessage = '*Welcome to the Kesäkuntoon Competition\\!* 🎉\n\n'
-    introductionMessage += 'This initiative, organized by TiK and PT, is designed to encourage a healthier lifestyle through friendly competition\\. As a participant, you\'ll earn points by engaging in various health and fitness activities, contributing both to your personal score and your team\'s overall performance\\.\n\n'
+    introductionMessage += 'This competition, organized by TiK and PT, is designed to encourage a healthier lifestyle through friendly competition\\. As a participant, you\'ll earn points by engaging in various health and fitness activities, contributing both to your personal score and your team\'s overall performance\\.\n\n'
     introductionMessage += '_Every point counts\\!_'
     await ctx.reply(introductionMessage, { parse_mode: 'MarkdownV2' })
 
