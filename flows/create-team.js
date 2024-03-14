@@ -4,6 +4,10 @@ const userService = require('../services/user-service')
 const texts = require('../utils/texts')
 const validateTeamName = require('../utils/validate-team-name')
 
+const cancelAndExitKeyboard = Markup.inlineKeyboard([
+  Markup.button.callback('Cancel', 'cancel')
+])
+
 const createTeamWizard = new Scenes.WizardScene(
   'create_team_wizard',
   async (ctx) => {
@@ -27,7 +31,7 @@ const createTeamWizard = new Scenes.WizardScene(
       )
       return ctx.wizard.next()
     } else {
-      await ctx.reply('You are not currently part of any team. Please provide a name for your new team.')
+      await ctx.reply('You are not currently part of any team. Please provide a name for your new team.', cancelAndExitKeyboard)
       ctx.wizard.state.confirmCreate = true
       return ctx.wizard.next()
     }
@@ -40,7 +44,7 @@ const createTeamWizard = new Scenes.WizardScene(
       const validation = validateTeamName(teamName)
 
       if (!validation.isValid) {
-        await ctx.reply(validation.reason)
+        await ctx.reply(validation.reason, cancelAndExitKeyboard)
         return ctx.wizard.selectStep(ctx.wizard.cursor)
       }
 
@@ -57,7 +61,7 @@ const createTeamWizard = new Scenes.WizardScene(
       } catch (error) {
 
         if (error.code === 11000) {
-          await ctx.reply('A team with that name already exists. Please try a different name.')
+          await ctx.reply('A team with that name already exists. Please try a different name.', cancelAndExitKeyboard)
           return ctx.wizard.selectStep(ctx.wizard.cursor)
         } else {
           await ctx.reply(texts.actions.error.error)
@@ -75,12 +79,18 @@ createTeamWizard.action('confirm_create_team', async (ctx) => {
   ctx.wizard.state.confirmCreate = true
 
   await ctx.answerCbQuery()
-  await ctx.editMessageText('Please provide a name for your new team.')
+  await ctx.editMessageText('Please provide a name for your new team.', cancelAndExitKeyboard)
 })
 
 createTeamWizard.action('cancel_create_team', async (ctx) => {
   ctx.wizard.state.confirmCreate = false
 
+  await ctx.answerCbQuery()
+  await ctx.editMessageText('Team creation canceled.')
+  return ctx.scene.leave()
+})
+
+createTeamWizard.action('cancel', async (ctx) => {
   await ctx.answerCbQuery()
   await ctx.editMessageText('Team creation canceled.')
   return ctx.scene.leave()

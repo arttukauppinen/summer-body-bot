@@ -61,9 +61,9 @@ const registerWizard = new Scenes.WizardScene(
         await ctx.reply(`Successfully joined ${team.name}!`)
         return ctx.scene.leave()
       } catch (error) {
-        await ctx.reply(texts.actions.error.error)
+        await ctx.reply('Invalid team ID format. Start over with /jointeam')
         return ctx.scene.leave()
-      }
+    }
     }
     
     return ctx.scene.leave()
@@ -77,7 +77,8 @@ registerWizard.action('accept_terms', async (ctx) => {
     'Please select your guild:',
     Markup.inlineKeyboard([
         Markup.button.callback('PT', 'select_guild_PT'),
-        Markup.button.callback('TiK', 'select_guild_TIK')
+        Markup.button.callback('TiK', 'select_guild_TIK'),
+        Markup.button.callback('Cancel & Exit', 'exit_wizard')
     ])
   )
 })
@@ -109,7 +110,8 @@ registerWizard.action(/^select_guild_(.+)$/, async (ctx) => {
           'Would you like to create a new team or join an existing one?',
           Markup.inlineKeyboard([
             Markup.button.callback('Create new team', 'new_team'),
-            Markup.button.callback('Join existing team', 'existing_team')
+            Markup.button.callback('Join existing team', 'existing_team'),
+            Markup.button.callback('Cancel & Exit', 'exit_wizard')
           ]),
           { parse_mode: 'Markdown' }
         )
@@ -132,6 +134,11 @@ registerWizard.action('existing_team', async (ctx) => {
 
   await ctx.answerCbQuery()
   await ctx.editMessageText('You chose to join an existing team. Enter the team ID you wish to join. This ID was provided when the team was initially created.')
+})
+
+registerWizard.action('exit_wizard', async (ctx) => {
+  await ctx.editMessageText('Canceled & Exited. Start again with /weekscores')
+  return ctx.scene.leave()
 })
 
 module.exports = { registerWizard }

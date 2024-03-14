@@ -3,6 +3,10 @@ const teamService = require('../services/team-service')
 const userService = require('../services/user-service')
 const texts = require('../utils/texts')
 
+const cancelAndExitKeyboard = Markup.inlineKeyboard([
+  Markup.button.callback('Cancel', 'cancel')
+])
+
 const joinTeamWizard = new Scenes.WizardScene(
   'join_team_wizard',
   async (ctx) => {
@@ -27,11 +31,7 @@ const joinTeamWizard = new Scenes.WizardScene(
       return ctx.wizard.next()
     } else {
       ctx.wizard.state.confirmJoin = true
-      await ctx.reply('You are not part of a team. Please enter the ID of the team you wish to join or use buttons below.', 
-        Markup.inlineKeyboard([
-          Markup.button.callback('Cancel', 'cancel_join_team')
-        ])
-      )
+      await ctx.reply('You are not part of a team. Please enter the ID of the team you wish to join or use buttons below.', cancelAndExitKeyboard)
       return ctx.wizard.next()
     }
   },
@@ -51,12 +51,12 @@ const joinTeamWizard = new Scenes.WizardScene(
           const team = await teamService.getTeamById(teamId)
 
           if (!team) {
-            await ctx.reply('No team found with the provided ID. Please check the ID and try again.')
+            await ctx.reply('No team found with the provided ID. Please check the ID and try again.', cancelAndExitKeyboard)
             return ctx.wizard.selectStep(ctx.wizard.cursor)
           }
 
           if (user.guild !== team.guild) {
-            await ctx.reply('You cannot join a team that belongs to a different guild.')
+            await ctx.reply('You cannot join a team that belongs to a different guild. Start over with /jointeam')
             return ctx.scene.leave()
           }
 
@@ -70,19 +70,16 @@ const joinTeamWizard = new Scenes.WizardScene(
           await ctx.reply(`Successfully joined team ${team.name}!`)
           return ctx.scene.leave()
         } catch (error) {
-          await ctx.reply(texts.actions.error.error)
-          return ctx.scene.leave()
+            await ctx.reply('Invalid team ID format. Start over with /jointeam')
+            return ctx.scene.leave()
         }
       } else {
-        await ctx.reply('Please enter the team ID.')
+        await ctx.reply('Please enter the team ID.', cancelAndExitKeyboard)
         return ctx.wizard.selectStep(ctx.wizard.cursor)
       }
     } else {
-      await ctx.reply('Please provide the team ID',
-        Markup.inlineKeyboard([
-          Markup.button.callback('Cancel', 'cancel_join_team')
-        ])
-      )
+      ctx.reply(texts.actions.error.error)
+      return ctx.wizard.exit()
     }
   }
 )
