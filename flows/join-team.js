@@ -25,7 +25,7 @@ const joinTeamWizard = new Scenes.WizardScene(
         'Do you wish to continue?',
         Markup.inlineKeyboard([
           Markup.button.callback('Yes, join new team', 'confirm_join_team'),
-          Markup.button.callback('No, cancel', 'cancel_join_team')
+          Markup.button.callback('No, cancel', 'cancel')
         ])
       )
       return ctx.wizard.next()
@@ -89,12 +89,12 @@ joinTeamWizard.action('confirm_join_team', async (ctx) => {
   await ctx.answerCbQuery()
   await ctx.editMessageText('Please enter the ID of the team you wish to join.',
     Markup.inlineKeyboard([
-        Markup.button.callback('Cancel', 'cancel_join_team')
+        Markup.button.callback('Cancel', 'cancel')
     ])
   )
 })
 
-joinTeamWizard.action('cancel_join_team', async (ctx) => {
+joinTeamWizard.action('cancel', async (ctx) => {
   ctx.wizard.state.confirmJoin = false
   await ctx.answerCbQuery()
   await ctx.editMessageText('Joining team canceled.')
