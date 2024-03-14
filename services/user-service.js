@@ -1,5 +1,5 @@
 const User = require('../models/user-model')
-
+const config = require('../config.js')
 const createUser = async (userData) => {
   try {
     const user = new User(userData)
@@ -59,15 +59,15 @@ const sendReminder = async (bot) => {
   const today = new Date().toISOString().split('T')[0]
 
   users.forEach((user) => {
-    //if (!user.lastSubmission || user.lastSubmission.toISOString().split('T')[0] !== today) {
+    if (!user.lastSubmission || user.lastSubmission.toISOString().split('T')[0] !== today) {
       try {
-        bot.telegram.sendMessage(user.userId, "i am the mikk dogg").catch((err) => {
+        bot.telegram.sendMessage(user.userId, config.reminderMessage).catch((err) => {
           console.error(`Error sending message to ${user.userId}:`, err)
         })
       } catch (error) {
         console.error(`Failed to send message to user ${user.userId}:`, error)
       }
-    //}
+    }
   })
 }
 
