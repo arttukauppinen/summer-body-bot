@@ -1,6 +1,6 @@
 const { connectDatabase, disconnectDatabase } = require('./database')
 const bot = require('./bot')
-
+const scheduleReminders = require('./utils/schedule-reminders')
 async function handleError(error) {
   console.error('Unexpected error occurred:', error)
 
@@ -18,6 +18,7 @@ async function handleError(error) {
 
 async function startBot() {
   try {
+    scheduleReminders()
     await connectDatabase()
     await bot.launch()
     console.log('Bot started')

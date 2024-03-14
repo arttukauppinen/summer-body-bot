@@ -60,10 +60,17 @@ const sendReminder = async (bot) => {
 
   users.forEach((user) => {
     //if (!user.lastSubmission || user.lastSubmission.toISOString().split('T')[0] !== today) {
-      bot.telegram.sendMessage(user.userId, "i am the mikk dogg")
+      try {
+        bot.telegram.sendMessage(user.userId, "i am the mikk dogg").catch((err) => {
+          console.error(`Error sending message to ${user.userId}:`, err)
+        })
+      } catch (error) {
+        console.error(`Failed to send message to user ${user.userId}:`, error)
+      }
     //}
   })
 }
+
 
 module.exports = {
   createUser,
