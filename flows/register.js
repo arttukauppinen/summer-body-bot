@@ -137,7 +137,7 @@ registerWizard.action('existing_team', async (ctx) => {
 })
 
 registerWizard.action('exit_wizard', async (ctx) => {
-  await ctx.editMessageText('Canceled & Exited. Start again with /weekscores')
+  await ctx.editMessageText('Canceled & Exited. Start again with /register')
   return ctx.scene.leave()
 })
 
