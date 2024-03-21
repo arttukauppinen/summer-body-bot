@@ -7,15 +7,15 @@ const teamRankingsScene = new Scenes.BaseScene('team_rankings_scene')
 teamRankingsScene.enter(async (ctx) => {
   try {
     const rankings = await pointService.getTeamRankings()
-    let message = '🏆 *Team Rankings* 🏆\n\n'
+    let message = '*Team Rankings \\(pts/team member\\)* 🏆\n\n'
     const titlePadding = 20 
-    const valuePadding = 6
+    const valuePadding = 15
 
     rankings.forEach((team, index) => {
       const rank = (index + 1).toString() + '.'
       const spaces = (index + 1) < 10 ? '  ' : ' '
-      const points = team.totalPoints.toString()
-      message += formatList(rank + spaces + team.name, points, titlePadding, valuePadding, 'pts') + '\n'
+      const points = team.averagePointsPerMember.toString()
+      message += formatList(rank + spaces + team.name, points, titlePadding, valuePadding) + '\n'
     })
 
     await ctx.reply(message, { parse_mode: 'MarkdownV2' })

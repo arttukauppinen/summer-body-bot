@@ -1,17 +1,33 @@
 const { Scenes } = require('telegraf')
 const pointService = require('../../services/point-service')
 const texts = require('../../utils/texts')
+const formatList = require('../../utils/format-list')
 
 const guildComparisonScene = new Scenes.BaseScene('guild_comparison_scene')
 guildComparisonScene.enter(async (ctx) => {
   try {
     const standings = await pointService.getGuildsTotals()
-    const PTTotal = standings.find(guild => guild.guild === 'PT').total
-    const TIKTotal = standings.find(guild => guild.guild === 'TIK').total
+    standings.sort((a, b) => b.total.average - a.total.average)
 
-    let message = `*Specific Guild Standings* 🏆 \nTiK \\(${TIKTotal} pts\\) vs\\. PT \\(${PTTotal} pts\\)\n\n`
+    const titlePadding = 15
+    const valuePadding = 10
 
-    const padding = 37
+    let message = '*Guilds Comparison* 🏆\n\n'
+
+    message += '*Average/Total points*\n'
+    standings.forEach(guild => {
+      const guildNameFixed = guild.guild === 'TIK' ? 'TiK' : guild.guild
+      const text = `\(${guild.total.average.toString()}/${guild.total.total.toString()}\)`
+      message += formatList(guildNameFixed, text, titlePadding, valuePadding) + '\n'
+    })
+
+    message += '\n'
+    message += '*Participants*\n'
+    const participants = standings.sort((a, b) => b.participants - a.participants)
+    participants.forEach(guild => {
+      const guildNameFixed = guild.guild === 'TIK' ? 'TiK' : guild.guild
+      message += formatList(guildNameFixed, guild.participants, titlePadding, valuePadding) + '\n'
+    })
 
     const categories = {
       exercise: 'Exercise',
@@ -23,14 +39,17 @@ guildComparisonScene.enter(async (ctx) => {
       lessAlc: 'Less Alcohol'
     }
 
+    message += '\n' 
+    message += '*Points per Category \\(avg/total\\):*\n\n'
+
     Object.keys(categories).forEach(categoryKey => {
       message += `*${categories[categoryKey]}*\n`
-      const sortedGuilds = [...standings].sort((a, b) => b[categoryKey] - a[categoryKey])
+      const sortedGuilds = standings.sort((a, b) => b[categoryKey].average - a[categoryKey].average)
+      
       sortedGuilds.forEach(guild => {
-        const guildName = guild.guild === 'TIK' ? 'TiK' : guild.guild
-        const points = `\`${guild[categoryKey].toString().padStart(3, ' ')}\` pts`
-        const guildNamePadded = guildName.padEnd(padding, ' ')
-        message += `${guildNamePadded} ${points}\n`
+        const guildNameFixed = guild.guild === 'TIK' ? 'TiK' : guild.guild     
+        const points = `\(${guild[categoryKey].average.toString()}/${guild[categoryKey].total.toString()}\)`
+        message += formatList(guildNameFixed, points, titlePadding, valuePadding) + '\n'
       })
       message += '\n'
     })

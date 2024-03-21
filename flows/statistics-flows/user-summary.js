@@ -7,15 +7,14 @@ const userSummaryScene = new Scenes.BaseScene('user_summary_scene')
 userSummaryScene.enter(async (ctx) => {
   try {
     const userId = ctx.from.id
-    const [summary, ranking] = await Promise.all([
+    const [summary] = await Promise.all([
       pointService.getUserSummary(userId),
-      pointService.getUserRanking(userId),
     ])
     const titlePadding = 17
     const valuePadding = 5
 
-    let message = '📊 *Your Points Summary* 📊\n\n'
-    message += `🏅 *Total of* ${summary.total} pts \\(Rank: ${ranking}\\)\n\n`
+    let message = '*Your Points Summary* 📊\n\n'
+    message += `*Total of* ${summary.total} pts \n\n`
 
     message += formatList('Exercise', summary.exercise, titlePadding, valuePadding, 'pts') + '\n'
     message += formatList('Try Sport', summary.trySport, titlePadding, valuePadding, 'pts') + '\n'

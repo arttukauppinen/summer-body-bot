@@ -1,29 +1,29 @@
 const { Scenes } = require('telegraf')
 const pointService = require('../../services/point-service')
 const texts = require('../../utils/texts')
+const formatList = require('../../utils/format-list')
 
 const guildStandingsScene = new Scenes.BaseScene('guild_standings_scene')
 guildStandingsScene.enter(async (ctx) => {
   try {
-    const totals = await pointService.getGuildsTotalPoints()
-    totals.sort((a, b) => b.total - a.total)
+    const averages = await pointService.getGuildsLeaderboards()
+    averages.sort((a, b) => b.average - a.average)
 
-    let message = '*Total Points: TiK vs PT* 🏆\n\n'
+    let message = '*Standings \\(pts/participant\\)* 🏆\n\n'
 
-    const guildPadding = 28
-    const maxPointLength = Math.max(...totals.map(guild => guild.total.toString().length))
+    const guildPadding = 10
+    const pointPadding = 15
 
-    const isTie = totals[0].total === totals[1].total
+    const isTie = averages[0].average === averages[1].average
     const emojis = isTie ? ['🤝', '🤝'] : ['🥇', '🥈']
 
-    totals.forEach((guild, index) => {
+    averages.forEach((guild, index) => {
       const guildName = guild.guild === 'TIK' ? 'TiK' : guild.guild
-      const guildNamePadded = guildName.padEnd(guildPadding, ' ')
-      const pointsPadded = `\`${guild.total.toString().padStart(maxPointLength, ' ')}\` pts`
-      message += `${emojis[index]}${guildNamePadded}${pointsPadded}\n`
+      const pointsText = guild.average.toString()
+      message += emojis[index] + formatList(guildName, pointsText, guildPadding, pointPadding) + '\n'
     })
 
-    await ctx.reply(message, { parse_mode: 'Markdown' })
+    await ctx.reply(message, { parse_mode: 'MarkdownV2' })
     ctx.scene.leave()
   } catch (error) {
     await ctx.reply(texts.actions.error.error)
