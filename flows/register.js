@@ -2,6 +2,11 @@ const { Scenes, Markup } = require('telegraf')
 const teamService = require('../services/team-service')
 const userService = require('../services/user-service')
 const texts = require('../utils/texts')
+const validateTeamName = require('../utils/validate-team-name')
+
+const cancelAndExitKeyboard = Markup.inlineKeyboard([
+  Markup.button.callback('Cancel', 'cancel')
+])
 
 const registerWizard = new Scenes.WizardScene(
   'register_wizard',
@@ -25,10 +30,13 @@ const registerWizard = new Scenes.WizardScene(
     const user = await userService.findUser(userId)
     if (ctx.wizard.state.action === 'create' && user) {
       const teamName = ctx.message.text
-      if (!teamName || teamName.length > 15) {
-        await ctx.reply('The team name you provided is not valid. Please ensure the team name is less than 15 characters long.')
+      const validation = validateTeamName(teamName)
+
+      if (!validation.isValid) {
+        await ctx.reply(validation.reason, cancelAndExitKeyboard)
         return ctx.wizard.selectStep(ctx.wizard.cursor)
       }
+
       try {
         const team = await teamService.createTeam(teamName, ctx.wizard.state.guild)
         await userService.addUserToTeam(user._id, team._id)
@@ -125,7 +133,7 @@ registerWizard.action('new_team', async (ctx) => {
   ctx.wizard.state.action = 'create'
 
   await ctx.answerCbQuery()
-  await ctx.editMessageText('You chose to create a new team. Give name for your team')
+  await ctx.editMessageText('You chose to create a new team. Give name for your team', cancelAndExitKeyboard)
 
 })
 
@@ -138,6 +146,12 @@ registerWizard.action('existing_team', async (ctx) => {
 
 registerWizard.action('exit_wizard', async (ctx) => {
   await ctx.editMessageText('Canceled & Exited. Start again with /register')
+  return ctx.scene.leave()
+})
+
+registerWizard.action('cancel', async (ctx) => {
+  await ctx.answerCbQuery()
+  await ctx.editMessageText('Canceled.')
   return ctx.scene.leave()
 })
 
