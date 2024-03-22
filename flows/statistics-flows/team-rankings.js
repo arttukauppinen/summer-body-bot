@@ -8,8 +8,8 @@ teamRankingsScene.enter(async (ctx) => {
   try {
     const rankings = await pointService.getTeamRankings()
     let message = '*Team Rankings \\(pts/team member\\)* 🏆\n\n'
-    const titlePadding = 20 
-    const valuePadding = 15
+    const titlePadding = 25 
+    const valuePadding = 10
 
     rankings.forEach((team, index) => {
       const rank = (index + 1).toString() + '.'
