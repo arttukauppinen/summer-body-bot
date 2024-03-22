@@ -1,5 +1,7 @@
 const User = require('../models/user-model')
 const config = require('../config.js')
+const pointService = require('./point-service')
+
 const createUser = async (userData) => {
   try {
     const user = new User(userData)
@@ -17,6 +19,26 @@ const getAllUsers = async () => {
     return users
   } catch (error) {
     console.error('Error occurred in getAllUsers:', error)
+    return []
+  }
+}
+
+const getGuildsTotalsWithParticipants = async () => {
+  try {
+    const guildsWithParticipants = await User.aggregate([
+      { $group: { _id: "$guild", count: { $sum: 1 } } }
+    ])
+
+    const guildsTotals = await pointService.getGuildsTotals()
+
+    const standings = guildsTotals.map(guild => {
+      const participantCount = guildsWithParticipants.find(g => g._id === guild.guild)?.count || 0
+      return { ...guild, participants: participantCount }
+    })
+
+    return standings
+  } catch (error) {
+    console.error('Error occurred in getGuildsTotalsWithParticipants:', error)
     return []
   }
 }
@@ -75,6 +97,7 @@ const sendReminder = async (bot) => {
 module.exports = {
   createUser,
   getAllUsers,
+  getGuildsTotalsWithParticipants,
   deleteUser,
   findUser,
   addUserToTeam,
