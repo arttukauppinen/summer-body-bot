@@ -1,7 +1,7 @@
 const { Scenes } = require('telegraf')
 const pointService = require('../../services/point-service')
 const texts = require('../../utils/texts')
-const formatList = require('../../utils/format-list')
+const { formatList } = require('../../utils/format-list')
 
 const teamRankingsScene = new Scenes.BaseScene('team_rankings_scene')
 teamRankingsScene.enter(async (ctx) => {

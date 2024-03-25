@@ -1,7 +1,7 @@
 const { Scenes } = require('telegraf')
 const userService = require('../../services/user-service')
 const texts = require('../../utils/texts')
-const formatList = require('../../utils/format-list')
+const { formatList } = require('../../utils/format-list')
 
 const guildComparisonScene = new Scenes.BaseScene('guild_comparison_scene')
 guildComparisonScene.enter(async (ctx) => {

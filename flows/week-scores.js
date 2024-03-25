@@ -5,7 +5,7 @@ const userService = require('../services/user-service')
 
 const texts = require('../utils/texts')
 const canAddPoints = require('../utils/can-add-points')
-const formatList = require('../utils/format-list')
+const { formatList } = require('../utils/format-list')
 const exitOnText = require('../utils/exit-on-text')
 
 const weekScoresWizard = new Scenes.WizardScene(

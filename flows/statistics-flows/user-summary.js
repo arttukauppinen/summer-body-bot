@@ -1,7 +1,7 @@
 const { Scenes } = require('telegraf')
 const pointService = require('../../services/point-service')
 const texts = require('../../utils/texts')
-const formatList = require('../../utils/format-list')
+const { formatList } = require('../../utils/format-list')
 
 const userSummaryScene = new Scenes.BaseScene('user_summary_scene')
 userSummaryScene.enter(async (ctx) => {

@@ -11,4 +11,4 @@ const escapeMarkdownV2 = (text) => {
     return text.replace(/[_*[\]()~`>#+-=|{}.!\\]/g, (x) => '\\' + x)
 }
 
-module.exports = {formatList, escapeMarkdownV2}
+module.exports = { formatList, escapeMarkdownV2 }

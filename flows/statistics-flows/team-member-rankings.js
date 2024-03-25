@@ -8,7 +8,6 @@ teamMemberRankingsScene.enter(async (ctx) => {
   try {
     const userId = ctx.from.id
     const rankings = await pointService.getTeamMemberRankings(userId)
-    console.log(rankings)
     let message = `*${escapeMarkdownV2(rankings[0].teamName)} Rankings* 🏅\n\n`
     const titlePadding = 20
     const valuePadding = 6
