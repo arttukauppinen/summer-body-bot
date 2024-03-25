@@ -50,7 +50,6 @@ const getTeamRankings = async () => {
   }
 }
 
-
 const getTeamMemberRankings = async (userId) => {
   try {
     const user = await User.findOne({ userId: userId })
@@ -58,10 +57,18 @@ const getTeamMemberRankings = async (userId) => {
       throw new Error('User not found')
     }
 
+    const team = await Team.find({ _id: user.team })
+    console.log(team[0].name)
+    if (!team) {
+      throw new Error('Team not found')
+    }
+    const teamName = team[0].name
+    
     const teamMembers = await User.find({ team: user.team }).sort({ 'points.total': -1 })
     return teamMembers.map(member => ({
       name: member.name,
-      totalPoints: member.points.total
+      totalPoints: member.points.total,
+      teamName: teamName
     }))
   } catch (error) {
     console.error('Error occurred in getTeamMemberRankings:', error)

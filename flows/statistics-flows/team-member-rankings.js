@@ -1,14 +1,15 @@
 const { Scenes } = require('telegraf')
 const pointService = require('../../services/point-service')
 const texts = require('../../utils/texts')
-const formatList = require('../../utils/format-list')
+const { formatList, escapeMarkdownV2 } = require('../../utils/format-list')
 
 const teamMemberRankingsScene = new Scenes.BaseScene('team_member_rankings_scene')
 teamMemberRankingsScene.enter(async (ctx) => {
   try {
     const userId = ctx.from.id
     const rankings = await pointService.getTeamMemberRankings(userId)
-    let message = '🏅 *Team Member Rankings* 🏅\n\n'
+    console.log(rankings)
+    let message = `*${escapeMarkdownV2(rankings[0].teamName)} Rankings* 🏅\n\n`
     const titlePadding = 20
     const valuePadding = 6
 
