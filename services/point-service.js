@@ -1,10 +1,9 @@
 const Team = require('../models/team-model')
 const User = require('../models/user-model')
-const userService = require('./user-service')
 
 const addPoints = async (userId, pointsData) => {
   try {
-    const user = await userService.findUser(userId)
+    const user = await User.findOne({ userId: userId })
     if (!user) {
       throw new Error('User not found')
     }
@@ -54,7 +53,7 @@ const getTeamRankings = async () => {
 
 const getTeamMemberRankings = async (userId) => {
   try {
-    const user = await userService.findUser(userId)
+    const user = await User.findOne({ userId: userId })
     if (!user) {
       throw new Error('User not found')
     }
@@ -72,7 +71,7 @@ const getTeamMemberRankings = async (userId) => {
 
 const getUserSummary = async (userId) => {
   try {
-    const user = await userService.findUser(userId)
+    const user = await User.findOne({ userId: userId })
     if (!user) {
       throw new Error('User not found')
     }
