@@ -74,8 +74,8 @@ bot.command('jointeam', onlyPrivate, (ctx) => { ctx.scene.enter('join_team_wizar
 bot.command('weekscores', onlyPrivate, (ctx) => { ctx.scene.enter('week_scores_wizard') })
 
 bot.command('leaderboards', (ctx) => { ctx.scene.enter('team_rankings_scene') })
-bot.command('team', onlyPrivate, (ctx) => { ctx.scene.enter('team_member_rankings_scene') })
-bot.command('summary', onlyPrivate, (ctx) => { ctx.scene.enter('user_summary_scene') })
+bot.command('team', (ctx) => { ctx.scene.enter('team_member_rankings_scene') })
+bot.command('summary', (ctx) => { ctx.scene.enter('user_summary_scene') })
 bot.command('tikvspt', (ctx) => { ctx.scene.enter('guild_standings_scene') })
 bot.command('tikvsptall', (ctx) => { ctx.scene.enter('guild_comparison_scene') })
 

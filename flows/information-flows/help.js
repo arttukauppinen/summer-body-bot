@@ -17,9 +17,11 @@ helpScene.enter(async (ctx) => {
   } else {
     // Help information integrated with stats commands for group chat
     helpMessage += '/leaderboards \\- View 30 teams with most points and their rankings\\.\n\n'
+    helpMessage += '/team \\- Check your team members\' contributions\\.\n\n'
+    helpMessage += '/summary \\- Get your personal points summary\\.\n\n'
     helpMessage += '/tikvspt \\- See guild standings in the competition\\.\n\n'
     helpMessage += '/tikvsptall \\- Compare guild points in more detail\\.\n\n'
-    helpMessage += 'Please interact with me in a private chat for full features and more available commands\\.'
+    helpMessage += 'Please interact with me in a private chat for full features and more detailed commands\\.'
   }
 
   await ctx.replyWithMarkdownV2(helpMessage)
