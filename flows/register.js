@@ -66,6 +66,7 @@ const registerWizard = new Scenes.WizardScene(
           return ctx.wizard.selectStep(ctx.wizard.cursor)
         }
         await userService.addUserToTeam(user._id, team._id)
+        await teamService.joinTeam(user._id, team._id)
     
         await ctx.reply(`Successfully joined ${team.name}!`)
         return ctx.scene.leave()
