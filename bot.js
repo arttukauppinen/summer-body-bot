@@ -69,8 +69,8 @@ bot.command('terms', onlyPrivate, (ctx) => { ctx.scene.enter('terms_scene') })
 
 bot.command('rmuser', onlyPrivate, (ctx) => { ctx.scene.enter('delete_user_wizard') })
 bot.command('register', onlyPrivate, (ctx) => { ctx.scene.enter('register_wizard') })
-bot.command('createteam', onlyPrivate, (ctx) => { ctx.scene.enter('create_team_wizard') })
-bot.command('jointeam', onlyPrivate, (ctx) => { ctx.scene.enter('join_team_wizard') })
+//bot.command('createteam', onlyPrivate, (ctx) => { ctx.scene.enter('create_team_wizard') })
+//bot.command('jointeam', onlyPrivate, (ctx) => { ctx.scene.enter('join_team_wizard') })
 bot.command('weekscores', onlyPrivate, (ctx) => { ctx.scene.enter('week_scores_wizard') })
 
 bot.command('leaderboards', (ctx) => { ctx.scene.enter('team_rankings_scene') })
