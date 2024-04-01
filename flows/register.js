@@ -14,7 +14,8 @@ const registerWizard = new Scenes.WizardScene(
     const userId = ctx.from.id
     const user = await userService.findUser(userId)
     if (user) {
-        await ctx.reply("You've already registered. You can still /createteam or /jointeam")
+        //await ctx.reply("You've already registered. You can still /createteam or /jointeam")
+        await ctx.reply("You've already registered.")
         return ctx.scene.leave()
     } else {
         await ctx.reply(texts.terms.question, Markup.inlineKeyboard([
