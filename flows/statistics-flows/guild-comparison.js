@@ -40,15 +40,15 @@ guildComparisonScene.enter(async (ctx) => {
     }
 
     message += '\n' 
-    message += '*Points per Category \\(avg/total\\):*\n\n'
+    message += '*Total Points per Category:*\n\n'
 
     Object.keys(categories).forEach(categoryKey => {
       message += `*${categories[categoryKey]}*\n`
-      const sortedGuilds = standings.sort((a, b) => b[categoryKey].average - a[categoryKey].average)
+      const sortedGuilds = standings.sort((a, b) => b[categoryKey].total - a[categoryKey].total)
       
       sortedGuilds.forEach(guild => {
         const guildNameFixed = guild.guild === 'TIK' ? 'TiK' : guild.guild     
-        const points = `\(${guild[categoryKey].average.toString()}/${guild[categoryKey].total.toString()}\)`
+        const points = `${guild[categoryKey].total.toString()}`
         message += formatList(guildNameFixed, points, titlePadding, valuePadding) + '\n'
       })
       message += '\n'

@@ -1,6 +1,39 @@
 const Team = require('../models/team-model')
 const User = require('../models/user-model')
 
+const updateGoodSleepPoints = async () => {
+  try {
+    const usersToUpdate = await User.find({ "points.goodSleep": 1 })
+
+    for (const user of usersToUpdate) {
+      user.points.goodSleep = 2 // Setting goodSleep to 2
+      user.points.total += 1 // Adding 1 to the total
+      await user.save()
+    }
+
+    console.log('User goodSleep points updated and total points adjusted successfully')
+  } catch (error) {
+    console.error('Error updating User goodSleep points and adjusting total:', error)
+  }
+}
+
+const updateTeamGoodSleepPoints = async () => {
+  try {
+    const teams = await Team.find({})
+
+    for (const team of teams) {
+      const increment = team.points.goodSleep // This is what will be added to both goodSleep and total
+      team.points.goodSleep += increment // Doubling goodSleep
+      team.points.total += increment // Adding the same increment to total
+      await team.save()
+    }
+
+    console.log('Team goodSleep points doubled and total points adjusted successfully')
+  } catch (error) {
+    console.error('Error doubling Team goodSleep points and adjusting total:', error)
+  }
+}
+
 const addPoints = async (userId, pointsData) => {
   try {
     const user = await User.findOne({ userId: userId })
@@ -34,16 +67,27 @@ const addPoints = async (userId, pointsData) => {
 
 const getTeamRankings = async () => {
   try {
-    const teams = await Team.find().sort({ 'points.total': -1 }).limit(30)
-    return teams.map(team => {
-      // Calculate average points per member using the length of the members array
-      const averagePointsPerMember = team.members.length > 0 ? team.points.total / team.members.length : 0
+    const teams = await Team.find()
+
+    const teamsWithAverages = await Promise.all(teams.map(async (team) => {
+      const teamMembersCount = await User.countDocuments({ team: team._id })
+      const averagePointsPerMember = teamMembersCount > 0 ? team.points.total / teamMembersCount : 0
+
       return {
+        _id: team._id,
         name: team.name,
         totalPoints: team.points.total,
-        averagePointsPerMember: averagePointsPerMember.toFixed(1)
+        averagePointsPerMember,
       }
-    })
+    }))
+
+    const sortedTeams = teamsWithAverages.sort((a, b) => b.averagePointsPerMember - a.averagePointsPerMember).slice(0, 30)
+
+    return sortedTeams.map(team => ({
+      name: team.name,
+      totalPoints: team.totalPoints,
+      averagePointsPerMember: team.averagePointsPerMember.toFixed(1)
+    }))
   } catch (error) {
     console.error('Error occurred in getTeamRankings:', error)
     throw new Error('Error fetching team rankings')
@@ -170,6 +214,8 @@ const getGuildsTotals = async () => {
 }
 
 module.exports = {
+  updateGoodSleepPoints,
+  updateTeamGoodSleepPoints,
   addPoints,
   getTeamRankings,
   getTeamMemberRankings,

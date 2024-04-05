@@ -172,7 +172,6 @@ const weekScoresWizard = new Scenes.WizardScene(
 weekScoresWizard.action(/^(yes|no)_(new_sport|sports_turn|try_recipe|good_sleep|meditate|less_alcohol)$/, async (ctx) => {
   const [actionResponse, context] = ctx.match.slice(1)
   const isAffirmative = actionResponse === 'yes'
-
   const pointsDataPropertyMap = {
     new_sport: 'trySport',
     sports_turn: 'sportsTurn',
@@ -183,10 +182,11 @@ weekScoresWizard.action(/^(yes|no)_(new_sport|sports_turn|try_recipe|good_sleep|
   }
 
   const stateProperty = pointsDataPropertyMap[context]
+  const isSleepData = stateProperty === 'goodSleep'
 
-  ctx.wizard.state.pointsData[stateProperty] = isAffirmative ? 1 : 0
+  ctx.wizard.state.pointsData[stateProperty] = isAffirmative ? isSleepData ? 2 : 1 : 0
   if (isAffirmative) {
-    ctx.wizard.state.pointsData.total += 1
+    ctx.wizard.state.pointsData.total += isSleepData ? 2 : 1
   }
 
   await ctx.deleteMessage()
