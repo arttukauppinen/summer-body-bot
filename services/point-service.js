@@ -1,39 +1,6 @@
 const Team = require('../models/team-model')
 const User = require('../models/user-model')
 
-const updateGoodSleepPoints = async () => {
-  try {
-    const usersToUpdate = await User.find({ "points.goodSleep": 1 })
-
-    for (const user of usersToUpdate) {
-      user.points.goodSleep = 2 // Setting goodSleep to 2
-      user.points.total += 1 // Adding 1 to the total
-      await user.save()
-    }
-
-    console.log('User goodSleep points updated and total points adjusted successfully')
-  } catch (error) {
-    console.error('Error updating User goodSleep points and adjusting total:', error)
-  }
-}
-
-const updateTeamGoodSleepPoints = async () => {
-  try {
-    const teams = await Team.find({})
-
-    for (const team of teams) {
-      const increment = team.points.goodSleep // This is what will be added to both goodSleep and total
-      team.points.goodSleep += increment // Doubling goodSleep
-      team.points.total += increment // Adding the same increment to total
-      await team.save()
-    }
-
-    console.log('Team goodSleep points doubled and total points adjusted successfully')
-  } catch (error) {
-    console.error('Error doubling Team goodSleep points and adjusting total:', error)
-  }
-}
-
 const addPoints = async (userId, pointsData) => {
   try {
     const user = await User.findOne({ userId: userId })
@@ -214,8 +181,6 @@ const getGuildsTotals = async () => {
 }
 
 module.exports = {
-  updateGoodSleepPoints,
-  updateTeamGoodSleepPoints,
   addPoints,
   getTeamRankings,
   getTeamMemberRankings,
