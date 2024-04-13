@@ -25,7 +25,6 @@ guildComparisonScene.enter(async (ctx) => {
     message += '*Participants*\n'
     const participants = standings.sort((a, b) => b.participants - a.participants)
     participants.forEach(guild => {
-      console.log('mitävittua', guild.participants)
       const guildNameFixed = guild.guild === 'TIK' ? 'TiK' : guild.guild
       message += formatList(guildNameFixed, guild.participants, titlePadding, valuePadding) + '\n'
     })
