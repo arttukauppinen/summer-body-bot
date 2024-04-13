@@ -1,12 +1,12 @@
 const { Scenes } = require('telegraf')
-const userService = require('../../services/user-service')
+const pointService = require('../../services/point-service')
 const texts = require('../../utils/texts')
 const { formatList } = require('../../utils/format-list')
 
 const guildComparisonScene = new Scenes.BaseScene('guild_comparison_scene')
 guildComparisonScene.enter(async (ctx) => {
   try {
-    const standings = await userService.getGuildsTotalsWithParticipants()
+    const standings = await pointService.getGuildsTotals()
     standings.sort((a, b) => b.total.average - a.total.average)
 
     const titlePadding = 15
@@ -25,6 +25,7 @@ guildComparisonScene.enter(async (ctx) => {
     message += '*Participants*\n'
     const participants = standings.sort((a, b) => b.participants - a.participants)
     participants.forEach(guild => {
+      console.log('mitävittua', guild.participants)
       const guildNameFixed = guild.guild === 'TIK' ? 'TiK' : guild.guild
       message += formatList(guildNameFixed, guild.participants, titlePadding, valuePadding) + '\n'
     })
