@@ -20,4 +20,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          ssh -o StrictHostKeyChecking=no -l ${{ secrets.YOUR_SERVER_USER}} ${{ secrets.YOUR_SERVER_IP}} 'echo ${{ secrets.YOUR_SERVER_USER_PASSWORD}} | sudo -S docker stop summer-body-bot'
+      - name: Deploy to Server
+        run: |
           ssh -o StrictHostKeyChecking=no -l ${{ secrets.YOUR_SERVER_USER}} ${{ secrets.YOUR_SERVER_IP}} 'cd /home/mikmokki/summer-body-bot/ && git pull origin main && echo ${{ secrets.YOUR_SERVER_USER_PASSWORD}} | sudo -S ./deploy-script.sh'
