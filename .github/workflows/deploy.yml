@@ -18,7 +18,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy to Server
+      - name: Stop the bot
         run: |
           ssh -o StrictHostKeyChecking=no -l ${{ secrets.YOUR_SERVER_USER}} ${{ secrets.YOUR_SERVER_IP}} 'echo ${{ secrets.YOUR_SERVER_USER_PASSWORD}} | sudo -S docker stop summer-body-bot'
       - name: Deploy to Server
